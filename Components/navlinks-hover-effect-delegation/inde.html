@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navliks Hover Effect With Event Delegation</title>
+
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            background: #b9b9b9;
+        }
+
+        .header{
+            background:#121212;
+            padding-block:16px;
+        }
+        .container{
+            max-width: calc(100% - 160px);
+            margin-inline:auto;
+        }
+
+        .nav-logo{
+            font-size: 28px;
+            font-weight: 700;
+            color:#fff;
+        }
+        .nav{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-list{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            column-gap:32px;
+            list-style: none;
+        }
+
+        .nav-link{
+            text-decoration: none;
+            font-size: 18px;
+            line-height: 1.25;
+            color:#fff;
+            cursor: pointer;
+            transition:all 0.25s ease-in
+        }
+
+        .nav-btn{
+            padding:12px 24px;
+            border:none;
+            font-size: 16px;
+            background-color: aqua;
+            color:#000;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="nav-logo">
+                    NavLogo
+                </div>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Testimonials</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Blog</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+                </ul>
+                <button class="nav-btn nav-link">
+                  Get In Touch
+                </button>
+            </nav>
+        </div>
+    </header>
+
+
+    <script>
+        const nav = document.querySelector(".nav");
+
+        function linkHover(e){
+            // console.log(this)
+            if(e.target.classList.contains("nav-link")){
+                const link = e.target;
+                const siblings = link.closest(".nav").querySelectorAll(".nav-link");
+                const logo = link.closest(".nav").querySelector(".nav-logo");
+
+                siblings.forEach(linkEl =>{
+                    if(linkEl !== link) {
+                        linkEl.style.opacity = this;
+                    }
+                    logo.style.opacity = this;
+                });
+            }
+        }
+
+        nav.addEventListener("mouseover",linkHover.bind(0.6))
+        nav.addEventListener("mouseout",linkHover.bind(1))
+
+
+    </script>
+    
+</body>
+</html>
