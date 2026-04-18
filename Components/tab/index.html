@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./tabStyles.css">
+    <title>Tabs</title>
+</head>
+<body>
+    
+    <main class="main">
+        <section class="tabs-section">
+            <div class="container">
+                <div class="tabs-container">
+                    <div class="btns-container">
+                        <button class="btn btn-primary btn--active" data-tab="1">
+                            <span>01 </span>
+                            <span>Instant Transfers</span>
+                        </button>
+                        <button class="btn btn-secondary" data-tab="2">
+                            <span>02 </span>
+                            <span>Instant loans</span>
+                        </button>
+                        <button class="btn btn-tertiary" data-tab="3">
+                            <span>02 </span>
+                            <span>Instant Closing</span>
+                        </button>
+                    </div>
+                    <div class="content-container">
+                        <div class="content-card content-card--1 content-card--active">
+                            <h1 class="content-title">
+                                01. Instant Transfers
+                            </h1>
+                            <p class="content-subtitle">
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione magnam voluptatem, deleniti modi, non facilis eligendi nisi quisquam nostrum, fugiat omnis! Delectus possimus similique maxime praesentium obcaecati aliquid reiciendis natus.
+                            </p>
+                        </div>
+                        <div class="content-card content-card--2">
+                            <h1 class="content-title">
+                                02. Instant Loans
+                            </h1>
+                            <p class="content-subtitle">
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione magnam voluptatem, deleniti modi, non facilis eligendi nisi quisquam nostrum, fugiat omnis! Delectus possimus similique maxime praesentium obcaecati aliquid reiciendis natus.
+                            </p>
+                        </div>
+                        <div class="content-card content-card--3">
+                            <h1 class="content-title">
+                                03. Instant Closing
+                            </h1>
+                            <p class="content-subtitle">
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione magnam voluptatem, deleniti modi, non facilis eligendi nisi quisquam nostrum, fugiat omnis! Delectus possimus similique maxime praesentium obcaecati aliquid reiciendis natus.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const btns = document.querySelectorAll(".btn");
+        const btnsContainer = document.querySelector(".btns-container");
+        const contentCards = document.querySelectorAll(".content-card");
+
+        btnsContainer.addEventListener("click", function(e){
+            const clicked = e.target.closest(".btn");
+            const tabNum = clicked.dataset.tab;
+            if(!clicked) return;
+
+            // Remove Active Classes
+            btns.forEach(btn => btn.classList.remove("btn--active"));
+            contentCards.forEach(card => card.classList.remove("content-card--active"));
+
+            // Active the tab button
+            clicked.classList.add("btn--active");
+
+            // Active the content
+            document.querySelector(`.content-card--${tabNum}`).classList.add("content-card--active");
+        });
+    </script>
+</body>
+</html>
