@@ -123,33 +123,33 @@ The following example shows how to load a JSON file from the server and display 
 */
 
 
-function load(url){
-    return new Promise(function(resolve, reject){
-        const request = new XMLHttpRequest();
-        request.onreadystatechange = function(){
-            if(this.readyState === 4 && this.status == 200){
-                resolve(this.response);
-            }else{
-                reject(this.status);
-            }
-        };
-        request.open("GET", url, true);
-        request.send();
-    });
-}
+// function load(url){
+//     return new Promise(function(resolve, reject){
+//         const request = new XMLHttpRequest();
+//         request.onreadystatechange = function(){
+//             if(this.readyState === 4 && this.status == 200){
+//                 resolve(this.response);
+//             }else{
+//                 reject(this.status);
+//             }
+//         };
+//         request.open("GET", url, true);
+//         request.send();
+//     });
+// }
 
-const url = 'https://www.javascripttutorial.net/sample/promise/api.json';
-const btn = document.querySelector("#btnGet");
-const msg = document.querySelector("#message");
+// const url = 'https://www.javascripttutorial.net/sample/promise/api.json';
+// const btn = document.querySelector("#btnGet");
+// const msg = document.querySelector("#message");
 
-btn.addEventListener("click", ()=>{
-    load(url).then((res)=>{
-        const result = JSON.parse(res);
-        msg.innerHTML = result.message;
-    }).catch((error)=>{
-        msg.innerHTML = `Error getting the message, HTTP status: ${error}`
-    })
-});
+// btn.addEventListener("click", ()=>{
+//     load(url).then((res)=>{
+//         const result = JSON.parse(res);
+//         msg.innerHTML = result.message;
+//     }).catch((error)=>{
+//         msg.innerHTML = `Error getting the message, HTTP status: ${error}`
+//     })
+// });
 
 
 
@@ -259,3 +259,80 @@ function getServiceCost(services){
 
 
 getUser(10).then(getService).then(getServiceCost).then(console.log(("")))
+
+
+// ==== Promise Example =====
+// const lotteryPromise = new Promise((resolve, reject)=>{
+//     console.log("Lottery draw is happening...");
+//     setTimeout(()=>{
+//         if(Math.random() >= 0.5){
+//             resolve("You win 🤑")
+//         }else{
+//             reject(new Error("You lost your money 💩"))
+//         }
+//     },2000);
+// })
+
+// lotteryPromise.then((res)=>{
+//     console.log(res);
+// }).catch((error)=>{
+//     console.error(error);
+// });
+
+
+// ==== Callback Hell =====
+// setTimeout(()=>{
+//     console.log("1 second passed");
+//     setTimeout(()=>{
+//         console.log("2 second passed");
+//         setTimeout(()=>{
+//             console.log("3 second passed");
+//             setTimeout(()=>{
+//                 console.log("4 second passed")
+//             },1000)
+//         },1000)
+//     },1000)
+// },1000)
+
+
+// ===== Promisifying setTimeout =====
+// const wait = function(seconds){
+//     return new Promise(resolve => {
+//         setTimeout(resolve, seconds * 1000);
+//     });
+// }
+
+// wait(1).then(()=>{
+//     console.log("1 second passed");
+//     return wait(2);
+// }).then(()=>{
+//     console.log("2 second passed");
+//     return wait(3);
+// }).then(()=>{
+//     console.log("3 second passed");
+//     return wait(4);
+// }).then(()=>{
+//     console.log("4 second passed")
+// })
+
+
+// ===== Promisifying the Geolocation API ====
+navigator.geolocation.getCurrentPosition(
+    position=> console.log(position), 
+    err => console.log(err)
+);
+
+
+const getPosition = function(){
+    // return new Promise((resolve, reject)=>{
+    //     navigator.geolocation.getCurrentPosition(
+    //         position => resolve(position),
+    //         err => reject(err)
+    //     )
+    // })
+
+    // OR
+   navigator.geolocation.getCurrentPosition(resolve, reject)
+}
+
+getPosition().then((position)=> console.log(position)).catch((err)=> console.log(err))
