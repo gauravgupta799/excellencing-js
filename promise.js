@@ -336,3 +336,102 @@ const getPosition = function(){
 }
 
 getPosition().then((position)=> console.log(position)).catch((err)=> console.log(err))
+
+
+// ====== Consuming Promises with Async/Await =====
+// const whereAmI = async ()=> {
+//     // Geolocation
+//     const pos = await getPosition();
+//     const {latitude:lat, longitude: lng} = pos.coords;
+
+//     // Reverse geoconding
+//     const resGeo = await fetch(`https://geocode.xyz/${lat},${lang}?geoit=json}`);
+//     const dataGeo = await resGeo.json();
+
+//     // Country Data
+//     const response = await fetch(`https://restcountries.com/rest/v2/name/${dataGeo.coutryCode}`);
+//     const data = await response.json();
+//     console.log(data);
+// }
+
+// whereAmI("india");
+// console.log("FIRST");
+
+
+// ===== Error Handling with try/catch =====
+const whereAmI = async ()=> {
+    try {
+        // Geolocation
+        const pos = await getPosition();
+        const {latitude:lat, longitude: lng} = pos.coords;
+
+        // Reverse geoconding
+        const resGeo = await fetch(`https://geocode.xyz/${lat},${lang}?geoit=json}`);
+        if(!resGeo.ok) throw new Error("Problem getting location data");
+        const dataGeo = await resGeo.json();
+
+        // Country Data
+        const response = await fetch(`https://restcountries.com/rest/v2/name/${dataGeo.coutryCode}`);
+        if(!response.ok) throw new Error("Problem getting country");
+        const data = await response.json();
+        // console.log(data);
+        
+    } catch (error) {
+        console.error(error.message);
+        throw new Error("Something went wrong" + error.message)
+    }
+}
+
+
+// ===== How to return something in async/await ===
+const whereAmI = async ()=> {
+    try {
+        // Geolocation
+        const pos = await getPosition();
+        const {latitude:lat, longitude: lng} = pos.coords;
+
+        // Reverse geoconding
+        const resGeo = await fetch(`https://geocode.xyz/${lat},${lang}?geoit=json}`);
+        if(!resGeo.ok) throw new Error("Problem getting location data");
+        const dataGeo = await resGeo.json();
+
+        // Country Data
+        const response = await fetch(`https://restcountries.com/rest/v2/name/${dataGeo.coutryCode}`);
+        if(!response.ok) throw new Error("Problem getting country");
+        const data = await response.json();
+        // console.log(data);
+
+        return `You are in ${dataGeo.city}, ${dataGeo.country}`
+        
+    } catch (error) {
+        console.error(error.message);
+        throw new Error("Something went wrong" + error.message)
+    }
+}
+
+console.log(`1: Will get location`);
+
+/* 
+ This is not nice approach to handle the promise when async/await return something
+*/
+
+// whereAmI()
+// .then(city => console.log(`2: ${city}`))
+// .catch(err=> console.log(`2: ${err.message}`))
+// .finally(()=> console.log("3: Finished getting location"))
+
+
+/*
+This is a nice approach to write the code withput mixing 
+the async/await with .then() and .catch() methods when it returns something
+*/
+
+(async function(){
+    try {
+        const city = await whereAmI();
+        console.log(`2: ${city}`)
+    } catch (err) {
+        console.log(`2: ${err.message}`)
+    }
+    console.log("3: Finished getting location")
+})();
