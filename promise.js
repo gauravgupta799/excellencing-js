@@ -470,4 +470,79 @@ const get3Countries = async (c1, c2, c3)=>{
     }
 }
 
-get3Countries('india', 'canada', 'portugal');
+// get3Countries('india', 'canada', 'portugal');
+
+/*
+| Year    | Feature        | Problem Solved                |
+| ------- | -------------- | ----------------------------- |
+| Pre-ES6 | Callbacks      | Basic async handling          |
+| 2015    | Promises (ES6) | Callback hell, error handling |
+| 2017    | Async/Await    | Readability, simplicity       |
+| 2020    | allSettled()   | Handle all results            |
+| 2021    | any()          | First success use-case        |
+*/
+
+
+// ?==== Promise.race() ======
+/* 
+    Promise.race() returns the result of the first promise that settles (either resolve or reject).
+*/
+// (async function(){
+//     const res= await Promise.race([
+//         getJSON(`https://restcountries.com/v3.1/name/india`),
+//         getJSON(`https://restcountries.com/v3.1/name/italy`),
+//         getJSON(`https://restcountries.com/v3.1/name/mexico`),
+//     ])
+//     console.log(res[0])
+// })();
+
+
+const timeout = function(sec){
+    return new Promise((_, reject)=>{
+        setTimeout(()=>{
+            reject(new Error("Request took too long!"))
+        }, sec * 1000)
+    });
+}
+
+Promise.race([
+    getJSON(`https://restcountries.com/v3.1/name/india`),
+    timeout(1),
+])
+.then(res=> console.log("Promise Response: ", res[0]))
+.catch(err=> console.log(err))
+
+
+// ?==== Promise.allSettled() ====
+/*
+    The Promise.allSettled() static method takes an iterable of promises as input and returns a single Promise. This returned promise fulfills when all of the input's promises settle (including when an empty iterable is passed), with an array of objects that describe the outcome of each promise.
+*/
+Promise.allSettled([
+    Promise.resolve("Success"), 
+    Promise.reject("Error"), 
+    Promise.resolve("Another Success")
+]).then(res=> console.log(res))
+
+
+
+// ?==== Promise.all() ====
+/*
+. Runs all promises in parallel
+. Fails fast if any fails
+👉 First widely used utility method
+*/
+Promise.all([
+    Promise.resolve("Success"),
+    Promise.reject("Error"),
+    Promise.resolve("Another Success")
+]).then(res=> console.log(res))
+.catch(err=> console.error(err))
+
+
+// ?==== Promise.any() ====
+Promise.any([
+    Promise.resolve("Success"),
+    Promise.reject("Error"),
+    Promise.resolve("Another Success")
+]).then(res=> console.log(res))
+.catch(err=> console.error(err))
